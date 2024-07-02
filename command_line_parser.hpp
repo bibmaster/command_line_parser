@@ -1,11 +1,4 @@
 #pragma once
-// Copyright (c) 2023 Dmitry Sokolov
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
-//
-// Tiny command line parser.
-
 #include <charconv>
 #include <optional>
 #include <string>
@@ -173,7 +166,7 @@ inline CommandLineParser::Option* CommandLineParser::findOption(char optChar) {
     return nullptr;
 }
 
-CommandLineParser::Option* CommandLineParser::findOption(
+inline CommandLineParser::Option* CommandLineParser::findOption(
     std::string_view name) {
     for(auto& opt : options_) {
         if(opt.name == name)
@@ -186,14 +179,14 @@ CommandLineParser::Option* CommandLineParser::findOption(
     return nullptr;
 }
 
-bool CommandLineParser::parseOption(Option& opt, std::string_view value) {
+inline bool CommandLineParser::parseOption(Option& opt, std::string_view value) {
     if(opt.parse(opt.value, value))
         return true;
     formatArgError("invalid option value"sv, value);
     return false;
 }
 
-bool CommandLineParser::parse(int argc, char** argv) {
+inline bool CommandLineParser::parse(int argc, char** argv) {
     program_ = argv[0];
     size_t pathSepPos = program_.find_last_of("/\\"sv);
     if(pathSepPos != std::string_view::npos)
@@ -318,7 +311,7 @@ bool CommandLineParser::parse(int argc, char** argv) {
     return false;
 }
 
-bool CommandLineParser::checkRequired() {
+inline bool CommandLineParser::checkRequired() {
     for(auto& opt : options_) {
         if(!opt.required || opt.parsed)
             continue;
